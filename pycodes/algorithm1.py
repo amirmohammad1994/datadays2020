@@ -32,7 +32,7 @@ def get_rank_array(array,keys):
     return result
 
 def rank_simple(vector):
-    return sorted(range(len(vector)), key=vector.__getitem__)
+    return sorted(range(len(vector)), reverse=True,key=vector.__getitem__)
 
 events_df = pd.read_csv('../event.csv',skipinitialspace=True, usecols=["displayId","userId"])
 display_to_user = dict(zip(events_df.displayId, events_df.userId))
@@ -54,7 +54,8 @@ ads_df = ads_df.merge(ads_df2)
 ads_df['userCluster'] = ads_df['displayId'].map(displayId_to_userId).map(userId_to_cluster)
 ads_df['adsPoints'] = ads_df.apply(lambda x: userCluster_addCluster_matrix(userCluster = x['userCluster'], adCluster = x['adsCluster']), axis=1)
 print(ads_df.head())
-
+print(ads_df[2:][:].head())
+print(view_df.head())
 result_adId = []
 result_displayId = []
 result_rank = []
@@ -66,4 +67,5 @@ for idx,row in ads_df.iterrows():
         result_rank.append(ranks[i]+1)
 
 result_df = pd.DataFrame({"displayId" : result_displayId, "adId" : result_adId , "rank": result_rank})
+print(result_df.head())
 result_df.to_csv('results2.csv',header=None, index=False)
