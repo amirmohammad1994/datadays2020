@@ -3,16 +3,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def displayId_to_userId(displayId):
-    return displayId+1
+    return display_to_user[displayId]
 
 def userId_to_cluster(userId):
-    return np.random.randint(20)
-
+    if (userId in user_to_cluster):
+        return user_to_cluster[userId]
+    else:
+        return 20
 def addId_to_cluster(adId):
-    return np.random.randint(10)
+    if (adId in ad_to_cluster):
+        return ad_to_cluster[adId]
+    else:
+        return 11
+
 
 def userCluster_addCluster_matrix(userCluster,adCluster):
-    return np.random.randint(10,size=len(adCluster))
+    result = np.random.randint(10,size=len(adCluster))
+    for i in range(len(adCluster)):
+        result[i] = view_df[str(adCluster[i])][userCluster]
+    return result
 
 def get_rank_array(array,keys):
     array2 = array[:]
@@ -24,6 +33,17 @@ def get_rank_array(array,keys):
 
 def rank_simple(vector):
     return sorted(range(len(vector)), key=vector.__getitem__)
+
+events_df = pd.read_csv('../event.csv',skipinitialspace=True, usecols=["displayId","userId"])
+display_to_user = dict(zip(events_df.displayId, events_df.userId))
+
+user_clusters_df = pd.read_csv('../user_cluster.csv')
+user_to_cluster = dict(zip(user_clusters_df.userId, user_clusters_df.Cluster))
+
+ad_clusters_df = pd.read_csv('../ad_cluster.csv')
+ad_to_cluster = dict(zip(ad_clusters_df.adId, ad_clusters_df.Cluster))
+
+view_df = pd.read_csv('../view_cluster.csv')
 
 test_df = pd.read_csv('../click_test.csv')
 test_df['adIdCluster'] = test_df['adId'].map(addId_to_cluster)
