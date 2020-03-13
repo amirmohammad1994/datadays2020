@@ -14,12 +14,12 @@ def userId_to_cluster(userId):
         return user_to_cluster[userId]
     else:
         users.add(userId)
-        return 20
+        return 28
 def addId_to_cluster(adId):
     if (adId in ad_to_cluster):
         return ad_to_cluster[adId]
     else:
-        return 11
+        return 120
 
 events_df = pd.read_csv('../event.csv',skipinitialspace=True, usecols=["displayId","userId"])
 display_to_user = dict(zip(events_df.displayId, events_df.userId))
@@ -37,6 +37,7 @@ click_train_df['adCluster'] = click_train_df['adId'].map(addId_to_cluster)
 click_train_df['userCluster'] = click_train_df['displayId'].map(displayId_to_userId).map(userId_to_cluster)
 #print(click_train_df.head())
 matrix = pd.crosstab(click_train_df['userCluster'],click_train_df['adCluster'])
-#print(matrix.head())
-print(users)
+print(matrix.head())
+print(matrix.info())
+#print(users)
 matrix.to_csv('../view_cluster.csv')

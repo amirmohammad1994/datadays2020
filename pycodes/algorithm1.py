@@ -9,18 +9,21 @@ def userId_to_cluster(userId):
     if (userId in user_to_cluster):
         return user_to_cluster[userId]
     else:
-        return 20
+        return 28
 def addId_to_cluster(adId):
     if (adId in ad_to_cluster):
         return ad_to_cluster[adId]
     else:
-        return 11
+        return 120
 
 
 def userCluster_addCluster_matrix(userCluster,adCluster):
     result = np.random.randint(10,size=len(adCluster))
     for i in range(len(adCluster)):
-        result[i] = view_df[str(adCluster[i])][userCluster]
+        try:
+            result[i] = view_df[str(adCluster[i])][userCluster]
+        except KeyError:
+            result[i] = np.random.randint(1000)
     return result
 
 def get_rank_array(array,keys):
