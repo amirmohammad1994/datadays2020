@@ -4,7 +4,6 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction import DictVectorizer
 
-users = {-1}
 
 def displayId_to_userId(displayId):
     return display_to_user[displayId]
@@ -13,7 +12,6 @@ def userId_to_cluster(userId):
     if (userId in user_to_cluster):
         return user_to_cluster[userId]
     else:
-        users.add(userId)
         return 28
 def addId_to_cluster(adId):
     if (adId in ad_to_cluster):
@@ -39,5 +37,4 @@ click_train_df['userCluster'] = click_train_df['displayId'].map(displayId_to_use
 matrix = pd.crosstab(click_train_df['userCluster'],click_train_df['adCluster'])
 print(matrix.head())
 print(matrix.info())
-#print(users)
 matrix.to_csv('../view_cluster.csv')
